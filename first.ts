@@ -1,5 +1,5 @@
 function teste (): string {
-  return '1'
+  return '222'
 }
 
 teste()
