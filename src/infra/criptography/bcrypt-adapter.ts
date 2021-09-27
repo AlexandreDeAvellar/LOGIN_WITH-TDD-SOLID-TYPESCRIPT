@@ -5,7 +5,7 @@ export class BcryptAdaper implements Encrypter {
   constructor (private readonly salt: number) { }
 
   async encrypt (value: string): Promise<string> {
-    const hashed = await bcrypt.hash(value, 12)
+    const hashed = await bcrypt.hash(value, this.salt)
     return hashed
   }
 }
