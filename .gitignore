@@ -3,5 +3,5 @@ dist
 coverage
 .husky
 first.ts
-globalConfig.js
+globalConfig.json
 .env
