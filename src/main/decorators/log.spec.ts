@@ -25,7 +25,7 @@ const makeSut = (): SutTypes => {
 
 describe('LogController Decorator', () => {
   it('Should call controller handle', async () => {
-    const { sut } = makeSut()
+    const { sut, controllerStub } = makeSut()
 
     const httpRequest = {
       body: {
@@ -36,10 +36,9 @@ describe('LogController Decorator', () => {
       }
     }
 
-    jest.spyOn(sut, 'handle')
+    const handleSpy = jest.spyOn(controllerStub, 'handle')
     await sut.handle(httpRequest)
 
-    expect(sut.handle).toBeCalledTimes(1)
-    expect(sut.handle).toHaveBeenCalledWith(httpRequest)
+    expect(handleSpy).toHaveBeenCalledWith(httpRequest)
   })
 })
