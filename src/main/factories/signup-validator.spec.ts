@@ -1,6 +1,6 @@
 import { makeSignupValidator } from './signup-validator'
 import { ValidatorComposite } from '../../presentation/helpers/validator/validator-composite'
-import { RequiredFieldsValidator } from '../../presentation/helpers/validator/required-fields-validator'
+import { RequiredFieldsValidator, CompareFieldsValidator } from '../../presentation/helpers/validator/'
 import { Validator } from '../../presentation/helpers/validator/validator'
 
 jest.mock('../../presentation/helpers/validator/validator-composite')
@@ -12,6 +12,7 @@ describe('SignupValidator Factory', () => {
     for (const validator of ['name', 'email', 'password', 'passwordConfirmation']) {
       validations.push(new RequiredFieldsValidator(validator))
     }
+    validations.push(new CompareFieldsValidator('password', 'passwordConfirmation'))
     expect(ValidatorComposite).toHaveBeenCalledWith(validations)
   })
 })
