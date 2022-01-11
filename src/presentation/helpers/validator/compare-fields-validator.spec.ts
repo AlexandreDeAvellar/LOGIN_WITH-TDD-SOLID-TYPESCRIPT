@@ -13,9 +13,10 @@ describe('RequiredField Validator', () => {
     expect(error).toEqual(new InvalidParamError('fieldToCompare'))
   })
 
-  // it('should return null if field is informed', () => {
-  //   const sut = makeSut()
-  //   const error = sut.validate({ any_field: 'any_value' })
-  //   expect(error).toBe(null)
-  // })
+  it('should return null if the fields are equals', () => {
+    const sut = makeSut()
+    const data = { field: 'any_value', fieldToCompare: 'any_value' }
+    const error = sut.validate(data)
+    expect(error).toBe(null)
+  })
 })
