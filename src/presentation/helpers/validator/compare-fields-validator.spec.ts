@@ -5,7 +5,7 @@ const makeSut = (): CompareFieldsValidator => {
   return new CompareFieldsValidator('field', 'fieldToCompare')
 }
 
-describe('RequiredField Validator', () => {
+describe('CompareFields Validator', () => {
   it('should return InvalidParam if fields are not equals', () => {
     const sut = makeSut()
     const data = { field: 'any_value', fieldToCompare: 'other_value' }
