@@ -40,4 +40,10 @@ describe('Validator Composite', () => {
     const error = sut.validate({ field: 'any_value' })
     expect(error).toEqual(new InvalidParamError('any_field'))
   })
+
+  test('should return null if all validation succeeds', () => {
+    const { sut } = makeSut()
+    const error = sut.validate({ field: 'any_value' })
+    expect(error).toBe(null)
+  })
 })
