@@ -1,5 +1,5 @@
-import { ServerError } from '../../errors'
-import { ok, serverError } from '../../helpers/http-helper'
+import { MissingParamError, ServerError } from '../../errors'
+import { badRequest, ok, serverError } from '../../helpers/http-helper'
 import { SignUpController } from './signup'
 import { AddAccount, AddAccountModel, AccountModel, HttpRequest, Validator } from './signup-protocol'
 
@@ -75,6 +75,13 @@ describe('SignUp Controller', () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(ok(makeFakeAccount()))
+  })
+
+  test('should return 400 if Validator returns an error', async () => {
+    const { sut, validatorStub } = makeSut()
+    jest.spyOn(validatorStub, 'validate').mockReturnValueOnce(new MissingParamError('any_field'))
+    const error = await sut.handle(makeFakeRequest())
+    expect(error).toEqual(badRequest(new MissingParamError('any_field')))
   })
 
   it('Should call Validator with correct value', async () => {
