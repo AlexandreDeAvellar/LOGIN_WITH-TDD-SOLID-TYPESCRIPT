@@ -1,7 +1,6 @@
-// import { MissingParamError } from '../../presentation/errors'
-import { CompareFieldsValidator, EmailValidation, RequiredFieldsValidator, ValidatorComposite } from '../../presentation/helpers/validator'
-import { Validator } from '../../presentation/helpers/validator/validator'
-import { EmailValidatorAdapter } from '../../utils/email-validator-adapter'
+import { CompareFieldsValidator, EmailValidation, RequiredFieldsValidator, ValidatorComposite } from '../../../presentation/helpers/validator'
+import { Validator } from '../../../presentation/helpers/validator/validator'
+import { EmailValidatorAdapter } from '../../../utils/email-validator-adapter'
 
 export const makeSignupValidator = (): ValidatorComposite => {
   const validations: Validator[] = []
