@@ -17,20 +17,20 @@ describe('Bcrypt Adaper', () => {
   it('Should call bcrypt with correct values', async () => {
     const sut = makeSut()
     const hashSpy = jest.spyOn(bcrypt, 'hash')
-    await sut.encrypt('any_value')
+    await sut.hash('any_value')
     expect(hashSpy).toHaveBeenCalledWith('any_value', salt)
   })
 
   it('Should return hash on success', async () => {
     const sut = makeSut()
-    const hash = await sut.encrypt('any_value')
+    const hash = await sut.hash('any_value')
     expect(hash).toBe('hash')
   })
 
   it('Should  throw if bcrypt throws', async () => {
     const sut = makeSut()
     jest.spyOn(bcrypt, 'hash').mockImplementationOnce(() => { throw new Error() })
-    const promise = sut.encrypt('any_value')
+    const promise = sut.hash('any_value')
     await expect(promise).rejects.toThrow()
   })
 })
