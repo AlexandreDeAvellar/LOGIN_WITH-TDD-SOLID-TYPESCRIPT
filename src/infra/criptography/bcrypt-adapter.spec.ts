@@ -4,6 +4,10 @@ import { BcryptAdaper } from './bcrypt-adapter'
 jest.mock('bcrypt', () => ({
   async hash (): Promise<string> {
     return await new Promise((resolve, reject) => resolve('hash'))
+  },
+
+  async compare (value: string, hahs: string): Promise<boolean> {
+    return await new Promise((resolve, reject) => resolve(true))
   }
 }))
 
@@ -14,7 +18,7 @@ const makeSut = (): BcryptAdaper => {
 }
 
 describe('Bcrypt Adaper', () => {
-  it('Should call bcrypt with correct values', async () => {
+  it('Should call hash with correct values', async () => {
     const sut = makeSut()
     const hashSpy = jest.spyOn(bcrypt, 'hash')
     await sut.hash('any_value')
@@ -27,10 +31,17 @@ describe('Bcrypt Adaper', () => {
     expect(hash).toBe('hash')
   })
 
-  it('Should  throw if bcrypt throws', async () => {
+  it('Should  throw if hash throws', async () => {
     const sut = makeSut()
     jest.spyOn(bcrypt, 'hash').mockImplementationOnce(() => { throw new Error() })
     const promise = sut.hash('any_value')
     await expect(promise).rejects.toThrow()
+  })
+
+  it('Should call compare with correct values', async () => {
+    const sut = makeSut()
+    const compareSpy = jest.spyOn(bcrypt, 'compare')
+    await sut.compare('any_value', 'any_hash')
+    expect(compareSpy).toHaveBeenCalledWith('any_value', 'any_hash')
   })
 })
