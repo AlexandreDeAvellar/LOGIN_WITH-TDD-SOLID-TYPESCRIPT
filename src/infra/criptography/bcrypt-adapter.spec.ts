@@ -58,4 +58,10 @@ describe('Bcrypt Adaper', () => {
     const promise = sut.compare('any_value', 'any_hash')
     await expect(promise).rejects.toThrow()
   })
+
+  it('Should return true if compare succeeds', async () => {
+    const sut = makeSut()
+    const isValid = await sut.compare('any_value', 'any_hash')
+    expect(isValid).toBe(true)
+  })
 })
