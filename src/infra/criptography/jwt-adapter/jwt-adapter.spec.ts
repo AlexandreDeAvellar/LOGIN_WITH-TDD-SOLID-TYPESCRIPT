@@ -12,4 +12,13 @@ describe('JWT Adapter', () => {
     await sut.encrypt('any_value')
     expect(signSpy).toBeCalledWith({ id: 'any_value' }, 'secret')
   })
+
+  test('should throws if sign throws', async () => {
+    const sut = makeSut()
+    jest.spyOn(jwt, 'sign').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const promise = sut.encrypt('any_value')
+    await expect(promise).rejects.toThrow()
+  })
 })
