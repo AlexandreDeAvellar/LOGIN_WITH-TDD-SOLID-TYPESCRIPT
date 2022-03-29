@@ -15,11 +15,13 @@ services:
     build: .
     image: clean-node-api
     restart: always
-    command: npm start
+    command: npm run debug
     volumes:
-      - ./dist:/src/dist
+      - ./dist/:/src/dist/
+      - ./package.json:/src/package.json
     ports:
       - "8060:8060"
+      - "9222:9222"
     networks:
       - mongo
 networks:
