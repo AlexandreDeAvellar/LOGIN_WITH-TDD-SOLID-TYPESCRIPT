@@ -14,7 +14,7 @@ services:
     container_name: api-container
     image: node:17
     restart: always
-    command: bash -c "npm install && npm run debug"
+    command: bash -c "npm install && npm i nodemon -D && npm run debug"
     working_dir: /src
     volumes:
       - ./dist/:/src/dist/
