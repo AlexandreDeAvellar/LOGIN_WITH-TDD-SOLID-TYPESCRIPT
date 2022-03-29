@@ -12,10 +12,10 @@ services:
       - mongo
   api:
     container_name: api-container
-    build: .
-    image: clean-node-api
+    image: node:17
     restart: always
-    command: npm run debug
+    command: bash -c "npm install && npm run debug"
+    working_dir: /src
     volumes:
       - ./dist/:/src/dist/
       - ./package.json:/src/package.json
