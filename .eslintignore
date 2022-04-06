@@ -5,4 +5,4 @@ coverage
 first.ts
 globalConfig.json
 .env
-data
+./data

@@ -6,3 +6,4 @@ first.ts
 globalConfig.json
 .env
 data
+!src/data
