@@ -3,7 +3,7 @@ import { LoginController } from '../../../../presentation/controllers/login/logi
 import { Controller } from '../../../../presentation/protocols'
 import { LogControllerDecorator } from '../../../decorators/log-controller-decorator'
 import { makeLoginValidator } from './login-validator-factory'
-import { makeAuthenticationFactory } from '../../usecases/authentication/authentication-factory'
+import { makeAuthenticationFactory } from '../../usecases/authentication/db-authentication-factory'
 
 export const makeLoginController = (): Controller => {
   const loginController = new LoginController(makeLoginValidator(), makeAuthenticationFactory())
