@@ -6,7 +6,6 @@ import { AccountMongoRepository } from '../../../../infra/db/mongodb/account-rep
 export const makeDbAddAccountFactory = (): AddAccount => {
   const salt = 12
   const addAccountRepository = new AccountMongoRepository()
-  const loadAccountByEmailRepository = new AccountMongoRepository()
   const bcrypt = new BcryptAdaper(salt)
-  return new DbAddAccount(bcrypt, addAccountRepository, loadAccountByEmailRepository)
+  return new DbAddAccount(bcrypt, addAccountRepository, addAccountRepository)
 }
