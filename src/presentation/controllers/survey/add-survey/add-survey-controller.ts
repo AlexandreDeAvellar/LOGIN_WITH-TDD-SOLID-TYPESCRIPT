@@ -1,4 +1,4 @@
-import { Controller, HttpRequest, HttpResponse, Validator } from './add-survey-protocol'
+import { badRequest, Controller, HttpRequest, HttpResponse, Validator } from './add-survey-protocol'
 
 export class AddSurveyController implements Controller {
   constructor (
@@ -6,7 +6,8 @@ export class AddSurveyController implements Controller {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    this.validator.validate(httpRequest.body)
+    const validateResponse = this.validator.validate(httpRequest.body)
+    if (validateResponse) return badRequest(validateResponse)
     const httpResponse: HttpResponse = {
       statusCode: 200,
       body: ''
