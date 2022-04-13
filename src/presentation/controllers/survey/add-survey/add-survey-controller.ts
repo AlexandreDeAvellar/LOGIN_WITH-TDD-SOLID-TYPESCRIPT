@@ -1,13 +1,19 @@
-import { badRequest, Controller, HttpRequest, HttpResponse, Validator } from './add-survey-protocol'
+import { badRequest, Controller, HttpRequest, HttpResponse, Survey, Validator } from './add-survey-protocol'
 
 export class AddSurveyController implements Controller {
   constructor (
-    private readonly validator: Validator
+    private readonly validator: Validator,
+    private readonly survey: Survey
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const validateResponse = this.validator.validate(httpRequest.body)
     if (validateResponse) return badRequest(validateResponse)
+    const { question, answers } = httpRequest.body
+    await this.survey.add({
+      question,
+      answers
+    })
     const httpResponse: HttpResponse = {
       statusCode: 200,
       body: ''
