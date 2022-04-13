@@ -1,4 +1,4 @@
-import { AddSurvey, Answer, HttpRequest, Validator, badRequest, Survey } from './add-survey-protocol'
+import { AddSurveyModel, Answer, HttpRequest, Validator, badRequest, AddSurvey } from './add-survey-protocol'
 import { AddSurveyController } from './add-survey-controller'
 
 const makeFakeAnswer = (): Answer => ({
@@ -6,7 +6,7 @@ const makeFakeAnswer = (): Answer => ({
   answer: 'any_answer'
 })
 
-const makeFakeAddSurvey = (): AddSurvey => ({
+const makeFakeAddSurvey = (): AddSurveyModel => ({
   question: 'any_question',
   answers: [makeFakeAnswer()]
 })
@@ -15,9 +15,9 @@ const makeFakeHttpRequest = (): HttpRequest => ({
   body: makeFakeAddSurvey()
 })
 
-const makeAddSurveyStub = (): Survey => {
-  class AddSurveyStub implements Survey {
-    async add (data: AddSurvey): Promise<null> {
+const makeAddSurveyStub = (): AddSurvey => {
+  class AddSurveyStub implements AddSurvey {
+    async add (data: AddSurveyModel): Promise<null> {
       return await new Promise(resolve => resolve(null))
     }
   }
@@ -36,7 +36,7 @@ const makeValidatorStub = (): Validator => {
 interface SutTypes {
   sut: AddSurveyController
   validatorStub: Validator
-  addSurveyStub: Survey
+  addSurveyStub: AddSurvey
 }
 
 const makeSut = (): SutTypes => {

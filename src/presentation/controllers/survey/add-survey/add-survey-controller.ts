@@ -1,9 +1,9 @@
-import { badRequest, Controller, HttpRequest, HttpResponse, Survey, Validator } from './add-survey-protocol'
+import { badRequest, Controller, HttpRequest, HttpResponse, AddSurvey, Validator } from './add-survey-protocol'
 
 export class AddSurveyController implements Controller {
   constructor (
     private readonly validator: Validator,
-    private readonly survey: Survey
+    private readonly survey: AddSurvey
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {

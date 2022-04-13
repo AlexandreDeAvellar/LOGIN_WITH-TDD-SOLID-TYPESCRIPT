@@ -3,11 +3,11 @@ export interface Answer {
   answer: string
 }
 
-export interface AddSurvey {
+export interface AddSurveyModel {
   question: string
   answers: Answer[]
 }
 
-export interface Survey {
-  add: (data: AddSurvey) => Promise<null>
+export interface AddSurvey {
+  add: (data: AddSurveyModel) => Promise<null>
 }
