@@ -1,4 +1,4 @@
-import { badRequest, Controller, HttpRequest, HttpResponse, AddSurvey, Validator, serverError } from './add-survey-protocol'
+import { badRequest, Controller, HttpRequest, HttpResponse, AddSurvey, Validator, serverError, noContent } from './add-survey-protocol'
 
 export class AddSurveyController implements Controller {
   constructor (
@@ -15,11 +15,7 @@ export class AddSurveyController implements Controller {
         question,
         answers
       })
-      const httpResponse: HttpResponse = {
-        statusCode: 200,
-        body: ''
-      }
-      return await new Promise(resolve => resolve(httpResponse))
+      return noContent()
     } catch (error) {
       return serverError(error)
     }
