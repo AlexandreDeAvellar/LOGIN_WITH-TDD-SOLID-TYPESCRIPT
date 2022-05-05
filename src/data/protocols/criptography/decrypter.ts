@@ -1,4 +1,4 @@
 
 export interface Decrypter {
-  decrypt: (accountToken: string) => Promise<string>
+  decrypt: (accessToken: string) => Promise<string>
 }
