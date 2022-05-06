@@ -32,7 +32,7 @@ describe('JWT Adapter', () => {
       await expect(promise).rejects.toThrow()
     })
 
-    test('should return token if sign suceeds', async () => {
+    test('should return token if sign succeds', async () => {
       const sut = makeSut()
       // const signSpy = jest.spyOn(jwt, 'sign')
       const AccessToken = await sut.encrypt('any_value')
