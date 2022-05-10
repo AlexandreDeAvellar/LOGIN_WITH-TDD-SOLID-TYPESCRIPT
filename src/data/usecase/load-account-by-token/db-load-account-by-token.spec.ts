@@ -4,7 +4,7 @@ import { Decrypter, LoadAccountByToken, AccountModel, LoadAccountByTokenReposito
 const makeDecrypterStub = (): Decrypter => {
   class DecrypterStub implements Decrypter {
     async decrypt (accountToken: string): Promise<string> {
-      return await new Promise(resolve => resolve('valid_token'))
+      return await new Promise(resolve => resolve('decrypted_token'))
     }
   }
   return new DecrypterStub()

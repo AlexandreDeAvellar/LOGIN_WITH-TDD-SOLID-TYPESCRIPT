@@ -9,7 +9,7 @@ export class DbLoadAccountByToken implements LoadAccountByToken {
   async loadByToken (accessToken: string, role?: string | undefined): Promise<AccountModel | null> {
     const token = await this.decrypter.decrypt(accessToken)
     if (token) {
-      const account = await this.loadAccountByTokenRepository.loadByToken(token, role)
+      const account = await this.loadAccountByTokenRepository.loadByToken(accessToken, role)
       if (account) return account
     }
     return null
