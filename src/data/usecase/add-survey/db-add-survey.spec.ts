@@ -1,8 +1,8 @@
 import { DbAddSurvey } from './db-add-survey'
-import { AddSurveyRepository, AddSurveyModel, Answer } from './db-add-survey-protocol'
+import { AddSurveyRepository, AddSurveyModel, SurveyAnswerModel } from './db-add-survey-protocol'
 import MockDate from 'mockdate'
 
-const makeFakeAnswer = (): Answer => {
+const makeFakeAnswer = (): SurveyAnswerModel => {
   return {
     image: 'any_image',
     answer: 'any_answer'
