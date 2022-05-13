@@ -1,6 +1,7 @@
 import { Collection } from 'mongodb'
 import { SurveyMongoRepository } from './survey-mongo-repository'
 import { AddSurveyModel, MongoHelper } from './survey-mongo-repository-protocols'
+import MockDate from 'mockdate'
 
 let surveyCollection: Collection
 
@@ -24,7 +25,8 @@ const makeFakeAddSurveyModel = (): AddSurveyModel => ({
     image: 'any_image'
   }, {
     answer: 'other_answer'
-  }]
+  }],
+  date: new Date()
 })
 
 interface SutTypes {
@@ -37,6 +39,9 @@ const makeSut = (): SutTypes => {
 }
 
 describe('SurveyMongoRepository', () => {
+  beforeAll(() => MockDate.set(new Date()))
+  afterAll(() => MockDate.reset())
+
   test('should add survey on success', async () => {
     const { sut } = makeSut()
     await sut.add(makeFakeAddSurveyModel())
