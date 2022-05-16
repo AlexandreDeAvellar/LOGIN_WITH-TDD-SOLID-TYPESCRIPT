@@ -42,10 +42,12 @@ describe('SurveyMongoRepository', () => {
   beforeAll(() => MockDate.set(new Date()))
   afterAll(() => MockDate.reset())
 
-  test('should add survey on success', async () => {
-    const { sut } = makeSut()
-    await sut.add(makeFakeAddSurveyModel())
-    const survey = await surveyCollection.findOne({ question: 'any_question' })
-    expect(survey).toBeTruthy()
+  describe('add()', () => {
+    test('should add survey on success', async () => {
+      const { sut } = makeSut()
+      await sut.add(makeFakeAddSurveyModel())
+      const survey = await surveyCollection.findOne({ question: 'any_question' })
+      expect(survey).toBeTruthy()
+    })
   })
 })
