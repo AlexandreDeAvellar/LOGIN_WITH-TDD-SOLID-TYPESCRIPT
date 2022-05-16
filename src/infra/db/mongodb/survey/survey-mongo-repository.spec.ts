@@ -50,4 +50,16 @@ describe('SurveyMongoRepository', () => {
       expect(survey).toBeTruthy()
     })
   })
+
+  describe('load()', () => {
+    test('should load all surveys on success', async () => {
+      const { sut } = makeSut()
+      await sut.add(makeFakeAddSurveyModel())
+      await sut.add({ ...makeFakeAddSurveyModel(), question: 'other_question' })
+      const surveys = await sut.loadAll()
+      expect(surveys).toBeInstanceOf(Array)
+      expect(surveys[0].question).toBe('any_question')
+      expect(surveys[1].question).toBe('other_question')
+    })
+  })
 })
