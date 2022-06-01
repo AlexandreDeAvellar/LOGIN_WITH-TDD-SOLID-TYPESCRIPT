@@ -47,4 +47,10 @@ describe('DbSaveSurveyResult', () => {
     const promise = sut.save(makeFakeSurveyResultDataRepo())
     await expect(promise).rejects.toThrow()
   })
+
+  test('should return SurveyResultModel on success', async () => {
+    const { sut } = makeSut()
+    const surveyResult = await sut.save(makeFakeSurveyResultDataRepo())
+    expect(surveyResult).toEqual(makeFakeSurveyResultModelRepo())
+  })
 })
