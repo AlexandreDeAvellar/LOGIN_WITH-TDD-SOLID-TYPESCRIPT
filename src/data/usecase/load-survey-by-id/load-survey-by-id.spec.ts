@@ -29,10 +29,17 @@ const makeSut = (): SutTypes => {
 describe('DbLoadSurveyById', () => {
   beforeEach(() => MockDate.set(new Date()))
   afterAll(() => MockDate.reset())
+
   test('should calls LoadSurveyByIdRepository with correct value', async () => {
     const { sut, loadSurveyByIdRepositoryStub } = makeSut()
     const loadByIdSpy = jest.spyOn(loadSurveyByIdRepositoryStub, 'loadById')
     await sut.loadById('any_id')
     expect(loadByIdSpy).toHaveBeenCalledWith('any_id')
+  })
+
+  test('should return SurveyModel on success', async () => {
+    const { sut } = makeSut()
+    const survey = await sut.loadById('any_id')
+    expect(survey).toEqual(makeFakeSurveysModel())
   })
 })
