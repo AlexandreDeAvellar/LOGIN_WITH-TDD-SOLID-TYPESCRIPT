@@ -27,7 +27,7 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbLoadSurveyById', () => {
-  beforeEach(() => MockDate.set(new Date()))
+  beforeAll(() => MockDate.set(new Date()))
   afterAll(() => MockDate.reset())
 
   test('should calls LoadSurveyByIdRepository with correct value', async () => {
