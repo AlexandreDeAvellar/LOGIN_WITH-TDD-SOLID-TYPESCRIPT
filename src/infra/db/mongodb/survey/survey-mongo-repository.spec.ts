@@ -78,5 +78,11 @@ describe('SurveyMongoRepository', () => {
       expect(survey.id).toBeTruthy()
       expect(survey).toEqual(expect.objectContaining(makeFakeAddSurveyModel()))
     })
+
+    test('should return null if no survey by id are found', async () => {
+      const { sut } = makeSut()
+      const survey = await sut.loadById('6298e31a894f0d9d49ece48d')
+      expect(survey).toEqual(null)
+    })
   })
 })
