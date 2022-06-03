@@ -1,7 +1,7 @@
-import { LoadSurveyByIdRepository, Controller, HttpRequest, HttpResponse } from './save-survey-result-controller-protocols'
+import { LoadSurveyById, Controller, HttpRequest, HttpResponse } from './save-survey-result-controller-protocols'
 
 export class SaveSurveyResultController implements Controller {
-  constructor (private readonly loadSurveyByIdRepository: LoadSurveyByIdRepository) {}
+  constructor (private readonly loadSurveyByIdRepository: LoadSurveyById) {}
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const { params: { id } } = httpRequest
     await this.loadSurveyByIdRepository.loadById(id)
