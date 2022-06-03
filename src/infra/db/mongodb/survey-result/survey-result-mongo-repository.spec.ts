@@ -40,5 +40,13 @@ describe('SurveyResultMongoRepository', () => {
       expect(surveyResultModel.id).toBeTruthy()
       expect(surveyResultModel).toEqual(expect.objectContaining(makeFakeSurveyResultDataRepo()))
     })
+
+    test('should update a survey result if its not new', async () => {
+      const { sut } = makeSut()
+      await sut.save(makeFakeSurveyResultDataRepo())
+      const surveyResultModel = await sut.save({ ...makeFakeSurveyResultDataRepo(), answer: 'update_enswer' })
+      expect(surveyResultModel.id).toBeTruthy()
+      expect(surveyResultModel).toEqual(expect.objectContaining({ ...makeFakeSurveyResultDataRepo(), answer: 'update_enswer' }))
+    })
   })
 })
