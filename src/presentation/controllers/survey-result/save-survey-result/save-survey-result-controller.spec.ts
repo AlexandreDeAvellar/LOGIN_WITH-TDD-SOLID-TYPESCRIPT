@@ -1,4 +1,4 @@
-import { forbidden, HttpRequest, InvalidParamError, LoadSurveyById, SurveyModel, serverError, SurveyResultData, SaveSurveyResult, SurveyResultModel } from './save-survey-result-controller-protocols'
+import { forbidden, HttpRequest, InvalidParamError, LoadSurveyById, SurveyModel, serverError, SurveyResultData, SaveSurveyResult, SurveyResultModel, ok } from './save-survey-result-controller-protocols'
 import { SaveSurveyResultController } from './save-survey-result-controller'
 import MockDate from 'mockdate'
 
@@ -16,6 +16,8 @@ const makeFakeSurveyResultData = (): SurveyResultData => ({
   accountId: 'any_account_id', answer: 'any_answer', date: new Date(), surveyId: 'any_survey_id'
 })
 
+const makeFakeSurveyResultModel = (): SurveyResultModel => ({ ...makeFakeSurveyResultData(), id: 'valid_id' })
+
 const makeLoadSurveyByIdStub = (): LoadSurveyById => {
   class LoadSurveyByIdStub implements LoadSurveyById {
     async loadById (id: string): Promise<SurveyModel | null> {
@@ -28,7 +30,7 @@ const makeLoadSurveyByIdStub = (): LoadSurveyById => {
 const makeSaveSurveyResultStub = (): SaveSurveyResult => {
   class SaveSurveyResultStub implements SaveSurveyResult {
     async save (data: SurveyResultData): Promise<SurveyResultModel> {
-      return await new Promise(resolve => resolve({ ...makeFakeSurveyResultData(), id: 'valid_id' }))
+      return await new Promise(resolve => resolve(makeFakeSurveyResultModel()))
     }
   }
   return new SaveSurveyResultStub()
@@ -97,5 +99,11 @@ describe('SaveSurveyResultController', () => {
     jest.spyOn(saveSurveyResultStub, 'save').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
     const hettpResponse = await sut.handle(makeFakeHttpRequest())
     expect(hettpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const hettpResponse = await sut.handle(makeFakeHttpRequest())
+    expect(hettpResponse).toEqual(ok(makeFakeSurveyResultModel()))
   })
 })
