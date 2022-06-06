@@ -3,7 +3,8 @@ import { SaveSurveyResultController } from './save-survey-result-controller'
 
 const makeFakeHttpRequest = (): HttpRequest => ({
   params: { id: 'any_survey_id' },
-  body: { answer: 'any_answer' }
+  body: { answer: 'any_answer' },
+  accountId: 'any_account_id'
 })
 
 const makeFakeSurveyModel = (): SurveyModel => ({
@@ -56,5 +57,11 @@ describe('SaveSurveyResultController', () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({ ...makeFakeHttpRequest(), body: { answer: 'wrong_answer' } })
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('answer')))
+  })
+
+  test('should return 403 if no accounId are found', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({ ...makeFakeHttpRequest(), accountId: '' })
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('accoundId')))
   })
 })
