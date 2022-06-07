@@ -4,7 +4,9 @@ import { Controller, HttpRequest, HttpResponse } from '../../../presentation/pro
 export const adaptRoute = (controller: Controller) => {
   return async (req: Request, res: Response) => {
     const httpRequest: HttpRequest = {
-      body: req.body
+      body: req.body,
+      params: req.params,
+      accountId: req.accountId
     }
     const HttpResponse: HttpResponse = await controller.handle(httpRequest)
     const { statusCode, body } = HttpResponse
