@@ -3,7 +3,7 @@ import { SaveSurveyResultController } from './save-survey-result-controller'
 import MockDate from 'mockdate'
 
 const makeFakeHttpRequest = (): HttpRequest => ({
-  params: { id: 'any_survey_id' },
+  params: { surveyId: 'any_survey_id' },
   body: { answer: 'any_answer' },
   accountId: 'any_account_id'
 })
@@ -57,7 +57,7 @@ describe('SaveSurveyResultController', () => {
     const { sut, loadSurveyByIdStub } = makeSut()
     const loadByIdSpy = jest.spyOn(loadSurveyByIdStub, 'loadById')
     await sut.handle(makeFakeHttpRequest())
-    expect(loadByIdSpy).toHaveBeenCalledWith(makeFakeHttpRequest().params.id)
+    expect(loadByIdSpy).toHaveBeenCalledWith(makeFakeHttpRequest().params.surveyId)
   })
 
   test('should return 403 if LoadSurveyById returns null', async () => {
@@ -88,10 +88,10 @@ describe('SaveSurveyResultController', () => {
 
   test('should call SaveSurveyResult with correct values', async () => {
     const { sut, saveSurveyResultStub } = makeSut()
-    const { accountId, body: { answer }, params: { id } } = makeFakeHttpRequest()
+    const { accountId, body: { answer }, params: { surveyId } } = makeFakeHttpRequest()
     const saveSpy = jest.spyOn(saveSurveyResultStub, 'save')
     await sut.handle(makeFakeHttpRequest())
-    expect(saveSpy).toHaveBeenCalledWith({ accountId, answer, surveyId: id, date: new Date() })
+    expect(saveSpy).toHaveBeenCalledWith({ accountId, answer, surveyId, date: new Date() })
   })
 
   test('should return 500 if SaveSurveyResult throws', async () => {
