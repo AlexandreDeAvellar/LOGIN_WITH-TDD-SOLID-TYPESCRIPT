@@ -1,6 +1,5 @@
-import { loginPath } from './paths/login-path'
-import { accountSchema } from './schemas/account-schema'
-import { loginParamsSchema } from './schemas/login-params-schema'
+import { loginPath } from './paths'
+import { accountSchema, loginParamsSchema } from './schemas'
 
 export default {
   openapi: '3.0.0',
