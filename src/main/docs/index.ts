@@ -1,4 +1,4 @@
-import { badRequest } from './components'
+import { badRequest, notFound, serverError, unauthorized } from './components'
 import { loginPath } from './paths'
 import { accountSchema, erroSchema, loginParamsSchema } from './schemas'
 
@@ -24,6 +24,6 @@ export default {
     error: erroSchema
   },
   components: {
-    badRequest
+    badRequest, notFound, serverError, unauthorized
   }
 }
