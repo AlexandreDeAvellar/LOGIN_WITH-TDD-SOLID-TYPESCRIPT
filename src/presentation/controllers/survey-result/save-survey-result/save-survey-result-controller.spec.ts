@@ -1,4 +1,4 @@
-import { forbidden, HttpRequest, InvalidParamError, LoadSurveyById, SurveyModel, serverError, SurveyResultData, SaveSurveyResult, SurveyResultModel, ok } from './save-survey-result-controller-protocols'
+import { forbidden, HttpRequest, InvalidParamError, LoadSurveyById, SurveyModel, serverError, SurveyResultData, SaveSurveyResult, SurveyResultModel, ok, SurveyResultAnswerModel } from './save-survey-result-controller-protocols'
 import { SaveSurveyResultController } from './save-survey-result-controller'
 import MockDate from 'mockdate'
 
@@ -12,11 +12,11 @@ const makeFakeSurveyModel = (): SurveyModel => ({
   answers: [{ answer: 'any_answer', image: 'any_image' }], date: new Date(), id: 'any_id', question: 'any_question'
 })
 
-const makeFakeSurveyResultData = (): SurveyResultData => ({
-  accountId: 'any_account_id', answer: 'any_answer', date: new Date(), surveyId: 'any_survey_id'
-})
+const makeSurveyResultAnswerModel = (): SurveyResultAnswerModel[] => ([
+  { image: 'any_image', answer: 'any_answer', count: 1, percent: 50 }
+])
 
-const makeFakeSurveyResultModel = (): SurveyResultModel => ({ ...makeFakeSurveyResultData(), id: 'valid_id' })
+const makeFakeSurveyResultModel = (): SurveyResultModel => ({ surveyId: '', question: '', date: new Date(), answers: makeSurveyResultAnswerModel() })
 
 const makeLoadSurveyByIdStub = (): LoadSurveyById => {
   class LoadSurveyByIdStub implements LoadSurveyById {
