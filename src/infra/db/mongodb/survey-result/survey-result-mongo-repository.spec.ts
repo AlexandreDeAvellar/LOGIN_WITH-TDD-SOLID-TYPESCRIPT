@@ -1,10 +1,17 @@
 import { SurveyResultMongoRepository } from './survey-result-mongo-repository'
-import { SurveyResultDataRepo, MongoHelper } from './survey-result-mongo-repository-protocols'
+import { MongoHelper, makeFakeSurveyResultDataRepo } from './survey-result-mongo-repository-protocols'
 import { Collection } from 'mongodb'
 import MockDate from 'mockdate'
 
-const makeFakeSurveyResultDataRepo = (): SurveyResultDataRepo => ({
-  accountId: 'any_id', answer: 'any_answer', date: new Date(), surveyId: 'any_id'
+const makeFakeAddSurveyModel = (): any => ({
+  question: 'any_question',
+  answers: [{
+    answer: 'any_answer',
+    image: 'any_image'
+  }, {
+    answer: 'other_answer'
+  }],
+  date: new Date()
 })
 
 interface SutTypes {
@@ -17,6 +24,8 @@ const makeSut = (): SutTypes => {
 }
 
 let surveyResult: Collection
+let surveys: Collection
+
 beforeAll(async () => {
   await MongoHelper.connect(process.env.MONGO_URL as string)
   MockDate.set(new Date())
@@ -24,7 +33,9 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   surveyResult = await MongoHelper.getCollection('surveyResults')
+  surveys = await MongoHelper.getCollection('surveys')
   await surveyResult.deleteMany({})
+  await surveys.deleteMany({})
 })
 
 afterAll(async () => {
@@ -36,17 +47,25 @@ describe('SurveyResultMongoRepository', () => {
   describe('save()', () => {
     test('should add a survey result if its new', async () => {
       const { sut } = makeSut()
-      const surveyResultModel = await sut.save(makeFakeSurveyResultDataRepo())
-      expect(surveyResultModel.id).toBeTruthy()
-      expect(surveyResultModel).toEqual(expect.objectContaining(makeFakeSurveyResultDataRepo()))
+      const surveyAdd = await surveys.insertOne(makeFakeAddSurveyModel())
+      const surveyResultModel = await sut.save({ ...makeFakeSurveyResultDataRepo(), surveyId: surveyAdd.insertedId.toString() })
+      expect(surveyResultModel).toBeTruthy()
+      expect(surveyResultModel?.surveyId).toEqual(surveyAdd.insertedId)
+      expect(surveyResultModel?.answers[0].count).toBe(1)
+      expect(surveyResultModel?.answers[0].percent).toBe(100)
     })
 
     test('should update a survey result if its not new', async () => {
       const { sut } = makeSut()
       await sut.save(makeFakeSurveyResultDataRepo())
-      const surveyResultModel = await sut.save({ ...makeFakeSurveyResultDataRepo(), answer: 'update_enswer' })
-      expect(surveyResultModel.id).toBeTruthy()
-      expect(surveyResultModel).toEqual(expect.objectContaining({ ...makeFakeSurveyResultDataRepo(), answer: 'update_enswer' }))
+      const surveyAdd = await surveys.insertOne(makeFakeAddSurveyModel())
+      const surveyResultModel = await sut.save({ ...makeFakeSurveyResultDataRepo(), surveyId: surveyAdd.insertedId.toString() })
+      expect(surveyResultModel).toBeTruthy()
+      expect(surveyResultModel?.surveyId).toEqual(surveyAdd.insertedId)
+      expect(surveyResultModel?.answers[0].count).toBe(1)
+      expect(surveyResultModel?.answers[0].percent).toBe(100)
+      // expect(surveyResultModel.surveyId).toBe(makeFakeSurveyResultModelRepo().surveyId)
+      // expect(surveyResultModel).toEqual(expect.objectContaining({ ...makeFakeSurveyResultModelRepo(), answer: 'update_answer' }))
     })
   })
 })
