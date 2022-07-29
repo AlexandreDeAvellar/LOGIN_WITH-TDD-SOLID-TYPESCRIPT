@@ -1,6 +1,7 @@
 import { DbLoadSurveyResult } from './db-load-survey-result'
 import { LoadSurveyResultRepository } from './db-load-survey-result-protocols'
 import { makeLoadSurveyResultRepositoryStub } from './db-load-survey-result-mocks'
+import { makeFakeSurveyResultModelRepo } from '../save-survey-result/db-save-survey-result-mocks'
 
 const surveyId = 'any_surveyId'
 
@@ -29,6 +30,12 @@ describe('DbLoadSurveyResult', () => {
       jest.spyOn(loadSurveyResultRepositoryStub, 'load').mockReturnValueOnce(Promise.reject(new Error()))
       const promise = sut.load(surveyId)
       await expect(promise).rejects.toThrow()
+    })
+
+    test('should return SurveyResultModel on success', async () => {
+      const { sut } = makeSut()
+      const surveyResult = await sut.load(surveyId)
+      expect(surveyResult).toEqual(makeFakeSurveyResultModelRepo())
     })
   })
 })
