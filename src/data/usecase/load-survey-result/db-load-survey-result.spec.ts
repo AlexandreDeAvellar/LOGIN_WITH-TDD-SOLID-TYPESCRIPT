@@ -2,6 +2,7 @@ import { DbLoadSurveyResult } from './db-load-survey-result'
 import { LoadSurveyResultRepository, LoadSurveyByIdRepository } from './db-load-survey-result-protocols'
 import { makeLoadSurveyResultRepositoryStub, makeLoadSurveyByIdRepositoryStub } from './db-load-survey-result-mocks'
 import { makeFakeSurveyResultModelRepo } from '../save-survey-result/db-save-survey-result-mocks'
+import MockDate from 'mockdate'
 
 const surveyId = 'any_surveyId'
 
@@ -19,6 +20,9 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbLoadSurveyResult', () => {
+  beforeAll(() => MockDate.set(new Date()))
+  afterAll(() => MockDate.reset())
+
   describe('load', () => {
     test('should call LoadSurveyResultRepository with correct values', async () => {
       const { sut, loadSurveyResultRepositoryStub } = makeSut()
