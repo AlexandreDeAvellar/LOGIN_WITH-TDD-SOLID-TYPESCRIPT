@@ -1,17 +1,19 @@
 import { DbSaveSurveyResult } from './db-save-survey-result'
-import { SaveSurveyResultRepository } from './db-save-survey-result-protocols'
-import { makeFakeSurveyResultDataRepo, makeFakeSurveyResultModelRepo, makeSaveSurveyResultRepositoryStub } from './db-save-survey-result-mocks'
+import { SaveSurveyResultRepository, LoadSurveyResultRepository } from './db-save-survey-result-protocols'
+import { makeFakeSurveyResultDataRepo, makeFakeSurveyResultModelRepo, makeSaveSurveyResultRepositoryStub, makeLoadSurveyResultRepositoryStub } from './db-save-survey-result-mocks'
 import MockDate from 'mockdate'
 
 interface SutTypes {
   sut: DbSaveSurveyResult
   saveSurveyResultRepositoryStub: SaveSurveyResultRepository
+  loadSurveyResultRepositoryStub: LoadSurveyResultRepository
 }
 
 const makeSut = (): SutTypes => {
   const saveSurveyResultRepositoryStub = makeSaveSurveyResultRepositoryStub()
-  const sut = new DbSaveSurveyResult(saveSurveyResultRepositoryStub)
-  return { sut, saveSurveyResultRepositoryStub }
+  const loadSurveyResultRepositoryStub = makeLoadSurveyResultRepositoryStub()
+  const sut = new DbSaveSurveyResult(saveSurveyResultRepositoryStub, loadSurveyResultRepositoryStub)
+  return { sut, saveSurveyResultRepositoryStub, loadSurveyResultRepositoryStub }
 }
 
 describe('DbSaveSurveyResult', () => {
@@ -30,6 +32,13 @@ describe('DbSaveSurveyResult', () => {
     jest.spyOn(saveSurveyResultRepositoryStub, 'save').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
     const promise = sut.save(makeFakeSurveyResultDataRepo())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('should call LoadSurveyResultRepository with correct values', async () => {
+    const { sut, loadSurveyResultRepositoryStub } = makeSut()
+    const loadBySurveyIdSpy = jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId')
+    await sut.save(makeFakeSurveyResultDataRepo())
+    expect(loadBySurveyIdSpy).toHaveBeenCalledWith(makeFakeSurveyResultDataRepo().surveyId)
   })
 
   test('should return SurveyResultModel on success', async () => {
