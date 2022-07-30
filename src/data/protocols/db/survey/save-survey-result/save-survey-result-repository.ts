@@ -5,5 +5,5 @@ export interface SurveyResultModelRepo extends SurveyResultModel {}
 export interface SurveyResultAnswerModelRepo extends SurveyResultAnswerModel {}
 
 export interface SaveSurveyResultRepository {
-  save: (data: SurveyResultDataRepo) => Promise<SurveyResultModelRepo | null>
+  save: (data: SurveyResultDataRepo) => Promise<void>
 }

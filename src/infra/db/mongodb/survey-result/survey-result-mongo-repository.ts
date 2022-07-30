@@ -3,14 +3,12 @@ import { MongoHelper, SaveSurveyResultRepository, SurveyResultDataRepo, SurveyRe
 import { QueryBuilder } from '../helpers/query-builder/query-builder'
 
 export class SurveyResultMongoRepository implements SaveSurveyResultRepository, LoadSurveyResultRepository {
-  async save (data: SurveyResultDataRepo): Promise<SurveyResultModelRepo | null> {
+  async save (data: SurveyResultDataRepo): Promise<void> {
     const { accountId, answer, date, surveyId } = data
     const surveyResultsCollection = await MongoHelper.getCollection('surveyResults')
     await surveyResultsCollection.findOneAndUpdate(
       { accountId, surveyId }, { $set: { answer, date } }, { upsert: true }
     )
-    const surveyResult = await this.loadBySurveyId(surveyId)
-    return surveyResult
   }
 
   async loadBySurveyId (surveyId: string): Promise<SurveyResultModelRepo | null> {
