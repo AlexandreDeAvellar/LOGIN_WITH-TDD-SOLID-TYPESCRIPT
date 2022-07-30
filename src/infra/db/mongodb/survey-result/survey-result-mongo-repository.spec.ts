@@ -70,4 +70,20 @@ describe('SurveyResultMongoRepository', () => {
       expect(surveyResultModel?.answers[1].percent).toBe(0)
     })
   })
+
+  describe('loadBySurveyId', () => {
+    test('should return SurveyResult on loadBySurveyId success', async () => {
+      const { sut } = makeSut()
+      const surveyIdObject = (await surveys.insertOne(makeFakeAddSurveyModel())).insertedId
+      const surveyId = surveyIdObject.toString()
+      await sut.save({ ...makeFakeSurveyResultDataRepo(), surveyId })
+      const surveyResultModel = await sut.loadBySurveyId(surveyId)
+      expect(surveyResultModel).toBeTruthy()
+      expect(surveyResultModel?.surveyId).toEqual(surveyIdObject)
+      expect(surveyResultModel?.answers[0].count).toBe(1)
+      expect(surveyResultModel?.answers[0].percent).toBe(100)
+      expect(surveyResultModel?.answers[1].count).toBe(0)
+      expect(surveyResultModel?.answers[1].percent).toBe(0)
+    })
+  })
 })
