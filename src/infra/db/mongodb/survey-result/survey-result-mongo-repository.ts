@@ -1,8 +1,8 @@
 import { ObjectId } from 'mongodb'
-import { MongoHelper, SaveSurveyResultRepository, SurveyResultDataRepo, SurveyResultModelRepo } from './survey-result-mongo-repository-protocols'
+import { MongoHelper, SaveSurveyResultRepository, SurveyResultDataRepo, SurveyResultModelRepo, LoadSurveyResultRepository } from './survey-result-mongo-repository-protocols'
 import { QueryBuilder } from '../helpers/query-builder/query-builder'
 
-export class SurveyResultMongoRepository implements SaveSurveyResultRepository {
+export class SurveyResultMongoRepository implements SaveSurveyResultRepository, LoadSurveyResultRepository {
   async save (data: SurveyResultDataRepo): Promise<SurveyResultModelRepo | null> {
     const { accountId, answer, date, surveyId } = data
     const surveyResultsCollection = await MongoHelper.getCollection('surveyResults')
@@ -13,7 +13,7 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository {
     return surveyResult
   }
 
-  private async loadBySurveyId (surveyId: string): Promise<SurveyResultModelRepo | null> {
+  async loadBySurveyId (surveyId: string): Promise<SurveyResultModelRepo | null> {
     const surveyResultsCollection = await MongoHelper.getCollection('surveyResults')
     const query = new QueryBuilder()
       .addFields({
