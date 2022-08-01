@@ -1,19 +1,7 @@
-import { LoadSurveyByIdRepository, SurveyModel } from './db-load-survey-by-id-protocols'
+import { LoadSurveyByIdRepository } from './db-load-survey-by-id-protocols'
 import { DbLoadSurveyById } from './db-load-survey-by-id'
+import { makeFakeSurveysModel, makeLoadSurveyByIdRepositoryStub } from './db-load-survey-by-id-mocks'
 import MockDate from 'mockdate'
-
-const makeFakeSurveysModel = (): SurveyModel => ({
-  id: 'valid_id', question: 'any_question', answers: [{ answer: 'any_answer', image: 'any_image' }], date: new Date()
-})
-
-const makeLoadSurveyByIdRepositoryStub = (): LoadSurveyByIdRepository => {
-  class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
-    async loadById (): Promise<SurveyModel | null> {
-      return await new Promise(resolve => resolve(makeFakeSurveysModel()))
-    }
-  }
-  return new LoadSurveyByIdRepositoryStub()
-}
 
 interface SutTypes {
   sut: DbLoadSurveyById
