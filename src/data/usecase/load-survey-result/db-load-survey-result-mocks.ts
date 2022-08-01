@@ -1,8 +1,12 @@
-import { LoadSurveyResultRepository, SurveyResultModel, LoadSurveyByIdRepository } from './db-load-survey-result-protocols'
+import { LoadSurveyResultRepository, SurveyResultModel, LoadSurveyByIdRepository, LoadSurveyResult } from './db-load-survey-result-protocols'
 import { makeFakeSurveyResultModelRepo } from '../save-survey-result/db-save-survey-result-mocks'
 
 export const makeLoadSurveyResultRepositoryStub = (): LoadSurveyResultRepository => ({
   loadBySurveyId: async (): Promise<SurveyResultModel> => await Promise.resolve(makeFakeSurveyResultModelRepo())
+})
+
+export const makeLoadSurveyResultStub = (): LoadSurveyResult => ({
+  load: async (): Promise<SurveyResultModel> => await Promise.resolve(makeFakeSurveyResultModelRepo())
 })
 
 export const makeLoadSurveyByIdRepositoryStub = (): LoadSurveyByIdRepository => ({
