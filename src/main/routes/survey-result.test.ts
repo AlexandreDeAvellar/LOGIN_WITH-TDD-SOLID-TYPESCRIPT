@@ -32,18 +32,26 @@ describe('PUT /surveys/:surveyId/result', () => {
     MockDate.reset()
   })
 
-  test('should return 403 on save survey result without accessToken', async () => {
-    await request(app).put('/api/surveys/surveyId/results').send({ answer: 'any_answer' }).expect(403)
+  describe('PUT /surveys/:surveyId/results', () => {
+    test('should return 403 on save survey result without accessToken', async () => {
+      await request(app).put('/api/surveys/surveyId/results').send({ answer: 'any_answer' }).expect(403)
+    })
+
+    test('should return 200 on save survey result with accessToken', async () => {
+      const account = await accountCollection.insertOne({ name: 'any_name', email: 'any_mail', password: 'any_pass' })
+      const id = account.insertedId.toString()
+      const accessToken = sign(id, env.jwtSecret)
+      await accountCollection.updateOne({ _id: new ObjectId(id) }, { $set: { accessToken } })
+      const survey = await surveysCollection.insertOne(makeFakeAddSurveyModel())
+      await request(app).put(`/api/surveys/${survey.insertedId.toString()}/results`)
+        .set('x-access-token', accessToken)
+        .send({ answer: 'any_answer' }).expect(200)
+    })
   })
 
-  test('should return 200 on save survey result with accessToken', async () => {
-    const account = await accountCollection.insertOne({ name: 'any_name', email: 'any_mail', password: 'any_pass' })
-    const id = account.insertedId.toString()
-    const accessToken = sign(id, env.jwtSecret)
-    await accountCollection.updateOne({ _id: new ObjectId(id) }, { $set: { accessToken } })
-    const survey = await surveysCollection.insertOne(makeFakeAddSurveyModel())
-    await request(app).put(`/api/surveys/${survey.insertedId.toString()}/results`)
-      .set('x-access-token', accessToken)
-      .send({ answer: 'any_answer' }).expect(200)
+  describe('GET /surveys/:surveyId/results', () => {
+    test('should return 403 on save survey result without accessToken', async () => {
+      await request(app).get('/api/surveys/surveyId/results').send({ answer: 'any_answer' }).expect(403)
+    })
   })
 })
